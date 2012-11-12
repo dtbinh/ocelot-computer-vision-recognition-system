@@ -62,7 +62,7 @@ public class SRV1Console extends Canvas implements ActionListener, KeyListener
     int pixels[] = new int[size];
     MemoryImageSource source;
 
-    private static Frame f = new Frame ("SRV-1 Console");
+    private static Frame f = new Frame ("SRV-1 Console: OCVRS");
 
     private static final String CONFIG_FILE = "srv.config";
     private static final String NOTIFY_CONFIG_FILE = "srv_notify.config";
@@ -119,31 +119,31 @@ public class SRV1Console extends Canvas implements ActionListener, KeyListener
 
     public static void main (String[]args)
     {
-    bv.loadConfig();
-
-    // read command line parameters
-    if (args.length > 0) {
-        for (int i = 0; i < args.length ; i++) {
-        if ("-c".equalsIgnoreCase(args[i])) {
-            connectOnStartup = true;
-        } else if ("-s".equalsIgnoreCase(args[i])) {
-            scanEnabled = true;
-        } else if ("-p".equalsIgnoreCase(args[i])) {
-            int port = -1;
-            try { port = Integer.parseInt(args[i + 1]); } catch (Exception e) {}
-            if (port > 0)
-            props.put("wcs.port", String.valueOf(port));
-        }
-        }
-    }
-
-    f.setBackground(Color.WHITE);
-    f.setLayout (new BorderLayout(3, 3));
-    f.add("Center", bv);
-    bv.init();
-    f.pack();
-    f.show();
-    f.repaint();
+    	bv.loadConfig();
+	
+	    // read command line parameters
+	    if (args.length > 0) {
+	        for (int i = 0; i < args.length ; i++) {
+	        if ("-c".equalsIgnoreCase(args[i])) {
+	            connectOnStartup = true;
+	        } else if ("-s".equalsIgnoreCase(args[i])) {
+	            scanEnabled = true;
+	        } else if ("-p".equalsIgnoreCase(args[i])) {
+	            int port = -1;
+	            try { port = Integer.parseInt(args[i + 1]); } catch (Exception e) {}
+	            if (port > 0)
+	            props.put("wcs.port", String.valueOf(port));
+	        }
+	        }
+	    }
+	
+	    f.setBackground(Color.WHITE);
+	    f.setLayout (new BorderLayout(3, 3));
+	    f.add("Center", bv);
+	    bv.init();
+	    f.pack();
+	    f.show();
+	    f.repaint();
     } 
 
     public void repaint ()
@@ -658,7 +658,111 @@ public class SRV1Console extends Canvas implements ActionListener, KeyListener
     while (!commandQ.isEmpty()) {
         String cmd = (String) commandQ.remove(0);
         if (DEBUG) System.out.println("## sending command: " + cmd);
+		  
+		  //If Zig-Zag
+		  if(cmd.equals("1234")){
+				//3 second pause between command change		
+				int seconds = 3;
+				for( int i=0; i<5; i++)
+				{
+		  		//Turn Right
+				_sendSRVCommand("4D461E00");
+				
+				try
+		     	{
+		      	 Thread.sleep( (int) ( seconds * 500 ) );
+		     	}
+		     	catch ( InterruptedException e )
+		     	{
+		     		 e.printStackTrace( );
+		     	}
+				//Turn Left
+				_sendSRVCommand("4D1E4600");
+				
+				try
+		     	{
+		      	 Thread.sleep( (int) ( seconds * 500 ) );
+		     	}
+		     	catch ( InterruptedException e )
+		     	{
+		     		 e.printStackTrace( );
+		     	}
+				//Stop
+				_sendSRVCommand("4D000000");
+				try
+		     	{
+		      	 Thread.sleep( (int) ( seconds * 500 ) );
+		     	}
+		     	catch ( InterruptedException e )
+		     	{
+		     		 e.printStackTrace( );
+		     	}
+				}
+				//Stop
+				_sendSRVCommand("4D000000");
+				
+		  }
+		  //If Random
+		  else if(cmd.equals("5678")){
+				//1 second pause between command change	
+				Random generator = new Random();
+				
+				//Do this 5 times
+				for( int i=0; i<15; i++)
+				{
+					//time Between Commands
+					int seconds = 2;
+					
+					//Generate a Random number between 1 and 10
+					int nextMove=generator.nextInt(8)+1;
+					
+					try
+			     	{
+			      	 Thread.sleep( (int) ( seconds * 500 ) );
+			     	}
+			     	catch ( InterruptedException e )
+			     	{
+			     		 e.printStackTrace( );
+			     	}
+	
+					
+					switch (nextMove){
+						//Left Drift
+						case 1: _sendSRVCommand("4D3C2800");
+									break;
+						//Forward
+						case 2: _sendSRVCommand("4D323200");
+									break;
+						//Right Drift
+						case 3: _sendSRVCommand("4D283C00");
+									break;
+						//Turn Left
+						case 4: _sendSRVCommand("4D1E4600");
+									break;
+						//Turn right
+						case 5: _sendSRVCommand("4D461E00");
+									break;
+						//Back Left
+						case 6: _sendSRVCommand("4DE2BA00");
+									break;
+						//Back
+						case 7: _sendSRVCommand("4DCECE00");
+									break;
+						//Back Right
+						case 8: _sendSRVCommand("4DBAE200");
+									break;
+									
+						//STOP			
+						default: _sendSRVCommand("4D000000");
+					}
+				}
+				//STOP
+				_sendSRVCommand("4D000000");
+		  }
+		  else{
+		  System.out.println("Else!!!!!");
         _sendSRVCommand(cmd);
+		  }
 
         // Command ACK / retry 
         /*
