@@ -1,8 +1,5 @@
-#for Linux or OSX
-LIBS =				
-OS_SPEC = ../src/posixSoc.o
-BIN =	
-REMOVE = rm
-
-
-
+#
+LIBS = \MinGW\lib\libwsock32.a
+OS_SPEC = ..\src\winSoc.o
+BIN = .exe
+REMOVE = del

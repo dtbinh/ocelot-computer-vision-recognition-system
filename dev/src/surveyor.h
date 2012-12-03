@@ -166,6 +166,8 @@ class VirtSurveyor
 
 	int	getIR(int ir[4]);
 	int	getVersion(char *ver);
+	int	getRange(char *ver);
+	int	getBattery(char *ver);
 	int	setVideoMode(int mode);
 	int	setFailSafe(int mode);
 

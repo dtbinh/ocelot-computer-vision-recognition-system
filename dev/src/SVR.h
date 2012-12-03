@@ -1,4 +1,5 @@
-#include "posixSoc.h"
+#include "winSoc.h"
+
 
 
 // This file selects which type of Surveyor object to create
@@ -17,6 +18,8 @@
 // SVR_ADDRESS use the following line
 //#define ADDRESS		NULL
 
-#define ADDRESS		NULL
+#define ADDRESS		"169.254.0.10:10001"
+
+
 
 

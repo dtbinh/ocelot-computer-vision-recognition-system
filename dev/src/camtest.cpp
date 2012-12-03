@@ -22,6 +22,7 @@
 #include "SVR.h" // use approapriate header for your OS
 #include <string>
 #include <assert.h>
+#include <stdio.h>
 
 
 

@@ -632,6 +632,63 @@ int	VirtSurveyor::getVersion(char *ver)
 	
 	return(ret);
 }
+
+/****************************************************************/
+/* Get RANGE					*/
+/****************************************************************/
+int	VirtSurveyor::getRange(char *ver)
+{
+	char	buf[128];
+	int	ret;
+
+	clearBuffer();
+	send('R');
+	flushOutputBuffer();
+	mInSync = 0;
+	ret = getLine(buf, sizeof(buf));
+	if (mDebuging & 0x0002)
+		fprintf(stderr, "ret = %d <%s>\n", ret, buf);
+	if (ret)
+	{
+		strcpy(ver, &buf[12]);
+	}
+	else
+	{
+		if (mDebuging  & 0x0002)
+			fprintf(stderr, "failed to get RANGE Response\n");
+	}
+	
+	return(ret);
+}
+
+/****************************************************************/
+/* Get Battery level					*/
+/****************************************************************/
+int	VirtSurveyor::getBattery(char *ver)
+{
+	char	buf[128];
+	int	ret;
+
+	clearBuffer();
+	send('D');
+	flushOutputBuffer();
+	mInSync = 0;
+	ret = getLine(buf, sizeof(buf));
+	if (mDebuging & 0x0002)
+		fprintf(stderr, "ret = %d <%s>\n", ret, buf);
+	if (ret)
+	{
+		strcpy(ver, &buf[12]);
+	}
+	else
+	{
+		if (mDebuging  & 0x0002)
+			fprintf(stderr, "failed to get Battery level Response\n");
+	}
+	
+	return(ret);
+}
+
 /****************************************************************/
 /* read a JPEG image from robot					*/
 /****************************************************************/

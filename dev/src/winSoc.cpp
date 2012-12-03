@@ -123,7 +123,7 @@ int	WinSock::readOneChar(char *ch)
 		ret = recv(mSocket, inMsg, sizeof(inMsg), 0);
 		if (ret == 0)
 		{
-                        usleep(100000);
+                        usleep((long)100000);
                         ret = recv(mSocket, inMsg, sizeof(inMsg), 0);
 		}
 		inCount = 0;

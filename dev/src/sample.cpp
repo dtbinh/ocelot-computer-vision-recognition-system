@@ -12,7 +12,7 @@
 /********************************************************************************/
 #include "SVR.h"
 #include <string>
-
+#include <stdio.h>
 
 
 Surveyor	robot(ADDRESS);
