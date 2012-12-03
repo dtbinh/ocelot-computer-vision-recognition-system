@@ -1,0 +1,8 @@
+#for Linux or OSX
+LIBS =				
+OS_SPEC = ../src/posixSoc.o
+BIN =	
+REMOVE = rm
+
+
+

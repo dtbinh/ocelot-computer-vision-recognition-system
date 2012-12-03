@@ -1,0 +1,45 @@
+If you are installing on a Windows system run 
+winsetup
+
+If you are installing on a Mac run
+./macsetup
+
+If you are installing on a Linux system run
+./linuxsetup
+
+After you have done the set up required for your system
+you need to set the address of your robot
+
+Two ways exist 
+1) changing the value of the ADDRESS variable in SVR.h
+this will fix the address at compile time
+the other
+2) if the ADDRESS variable in SVR.h is NULL
+the system will get the address from the SVR_ADDRESS
+environment variable
+
+
+cd src
+
+edit the SVR.h file and set the ADDRESS variable value
+ 
+
+make
+
+once make succeeds you can then make the examples
+
+cd .. 
+cd examples
+make
+
+
+I have been experimenting with SDL graphics for the Surveyor
+if you are set up for SDL 
+then
+
+make SDL 
+
+will construct a simple picture viewer and a test program
+
+
+
