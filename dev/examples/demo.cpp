@@ -9,8 +9,8 @@
 /********************************************************************************/
 #include "SVR.h" // use approapriate header for your OS
 #include <string>
-
-
+#include <stdio.h>
+#include <time.h>
 
 Surveyor	robot(ADDRESS);	
 
@@ -78,7 +78,7 @@ void	calibrateCam()
 			if (!turn)
 			{
 				robot.drive(-30, -30);
-				usleep(10);
+				//usleep(10);
 			}
 			turn = 1;		
 			robot.drive(-40, 40);

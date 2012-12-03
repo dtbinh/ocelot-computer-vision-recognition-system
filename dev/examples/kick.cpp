@@ -130,19 +130,19 @@ printf("looking for ball\n");
 		if (!found)
 		{
 			drive(40, 40);
-			usleep(SECONDS(1.5));
+			usleep(SECONDS(2));
 			drive(40, -40);		// turn a bit
-			usleep(4 * FIVE_DEGREES);		// say 20 degrees
+			usleep(4);		// say 20 degrees
 		}
 		else if (ballFrom + ballTo < 50)
 		{
 			drive(40, -40);
-			usleep(FIVE_DEGREES/3);
+			usleep(3);
 		}
 		else if (ballFrom + ballTo > 110)
 		{
 			drive(-40, 40);
-			usleep(FIVE_DEGREES/3);
+			usleep(3);
 		}
 		else
 			break;
@@ -240,12 +240,12 @@ void	adjustAim(int aim)
 	else if (aim < 70)
 	{
 		drive(20, 0);
-//		usleep(100000);
+		usleep(100000);
 	}
 	else
 	{
 		drive(40, 0);
-//		usleep(100000);
+		usleep(100000);
 	}
 }
 void	focusOnBall(int toll)
@@ -306,14 +306,14 @@ void	robotPlay()
 
 			printf("Shoot!\n");
 			drive(100, 100);		// run like hell!
-			usleep(200000);
+		  usleep(200000);
 		}
 		else if (shootCounter)
 		{
 			printf("shoot follow through\n");
 			shootCounter--;
 			drive(100, 100);		// follow through
-			usleep(200000);
+			 usleep(200000);
 		}
 		else
 		{
