@@ -1,11 +1,10 @@
 /********************************************************************************/
-/* start  									*/ 
-/* a simple demonstration program for the Surveyor class			*/
-/*										*/
-/* usage: start									*/
-/* 										*/
-/* Description: robot will move forward about a foot or two			*/
-/* 										*/
+// Ocelot-Computer-Vision-Recognition-System
+// 
+// Robot patterns: RANDOM, ZigZag
+//
+// Modified from code created by: SEE WINSOC.h
+// 
 /********************************************************************************/
 #include "SVR.h"
 
@@ -20,6 +19,7 @@ using namespace std;
 /* make a global Surveyor object called robot */
 Surveyor	robot(ADDRESS);
 
+// compute range from object
 int range(){
 	char	buffer[256];
 	int 	range;
@@ -30,19 +30,21 @@ int range(){
 	num[0] = buffer[2];
 	num[1] = buffer[3];
 	num[2] = buffer[4];
-	//change char to string
+	//change char to int
 	range=atoi(num);
 	
 	return range;
 }
 
-//1 is ok, 0 is low
+// 1 is ok, 0 is low
 int battery(){
 	char	buffer[256];
 	int 	level=1;
 	
 	//For detecting Battery Voltage
 	robot.getBattery(buffer);
+	
+	printf("Battery: %s",buffer);
 	
 	//if character 14 is a d
 	//message is low battery voltage detected
@@ -53,64 +55,139 @@ int battery(){
 	return level;
 }
 
-int	main()
-{
-	//print Range value
-//	cout << "SRV-1 Range: " << range() << endl;
-	
+//take pic
+void takePic(){
+	//take pic
+	robot.takePhoto();
+	robot.savePhoto("robo.jpg");
+}
+
+// ZigZag with Avoid
+// numtimes=1 equiv to 2.67 seconds
+void ZigZag(){
 	int 	go=1;
-	int 	r=0;
+	int 	rng=0;
+	int 	wall=0;
+	int 	walli=0;
 	
-	robot.drive(10, 60,100);
+	//turn robot left
+	robot.drive(10, 65, 100);
 	usleep(500);
 	
-	//ZigZag with Avoid
-	for(int i=0; i<5; i++)
+	for(int i=0;;i++)
 	{
-		robot.drive(38, 40,400);
+		// go straight approx 20cm
+		robot.drive(38, 40, 350);
 		usleep(500);
-		robot.takePhoto();
-		if(i%2==0){
-			robot.savePhoto("begin.jpg");
-		}
-		else{
-			robot.savePhoto("begin1.jpg");
-		}
-		
-		r= range();
+		takePic();
 		usleep(500);
-		if(r<20){
-			if(go==1){
+		rng = range();
+		//extraDelay
+		robot.drive(0, 0, 500);
+		system("start /MIN OpenSURF2008.exe");
+		//stall due to range failure and openCV
+		Sleep(16000);
+		if(walli+2==i){
+			wall=0;
+		}
+		// !=0 because camera may sometimes fail 
+		// to see laser and compute range
+		if( rng<20 && rng!=0 ){
+			if (wall==2){
+				//180
+				robot.drive(0, 100, 125);
+				wall=0;
+			}
+			else if(go==1){
 				go=0;
-				robot.drive(-10, -50,170);
+				//backup and turn right
+				robot.drive(-10, -55, 170);
+				wall++;
+				walli=i;
 			}
 			else{
 				go=1;
-				robot.drive(-50, -10,170);
+				//backup and turn left
+				robot.drive(-55, -10, 170);
+				wall++;
+				walli=i;
 			}
-		}
-	}
-	
-	if(0){
-	int l;
-	int r;
-	
-	//Random No Avoid
-	for(int i=0; i<5; i++)
-	{
-		l=rand() % 50;
-		r=rand() % 50;
-		
-		robot.drive(l, r,500);
-		robot.takePhoto();
-		if(i%2==0){
-			robot.savePhoto("begin.jpg");
+			usleep(500);
 		}
 		else{
-			robot.savePhoto("begin1.jpg");
+			usleep(670);
 		}
-		robot.drive(0, 0,200);
+		/*
+		if (i%5 ==0){
+			if (!battery()){
+				break;
+			}
+		}
+		*/
 	}
+	
+}
+
+// Random with Avoid
+// numtimes=1 equiv to 2.17 seconds
+void Random(){
+	int 	randNum;
+	int 	rng=0;
+	
+	for(;;)
+	{
+		randNum=rand() % 50 + 15;
+		
+		robot.drive(randNum, -randNum, 350);
+		usleep(500);
+		takePic();
+		usleep(500);
+		rng=range();
+		//extraDelay
+		robot.drive(0, 0, 500);
+		system("start /MIN OpenSURF2008.exe");
+		//stall due to range failure and openCV
+		Sleep(16000);
+		
+		// !=0 because camera may sometimes fail 
+		// to see laser and compute range
+		if( rng>20 || rng==0 ){
+			//go Straight
+			robot.drive(38, 40, 350);
+			usleep(500);
+		}
+		else{
+			usleep(670);
+		}
+		/*
+		if (i%5 ==0){
+			if (!battery()){
+				break;
+			}
+		}
+		*/
 	}
+}
+
+void Dance(){
+	robot.drive(100, -100, 350);
+	robot.setLasers(1);
+	robot.drive(100, -100, 350);
+	robot.setLasers(0);
+	robot.drive(100, -100, 350);
+	robot.setLasers(1);
+	robot.drive(100, -100, 350);
+	robot.setLasers(0);	
+}
+
+int	main()
+{
+
+	//ZigZag();
+	Random();
+	//takePic();
+	//battery();
+	//Dance();
+	
 	return 0;
 }
