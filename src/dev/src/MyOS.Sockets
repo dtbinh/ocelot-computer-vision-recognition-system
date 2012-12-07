@@ -1,0 +1,5 @@
+#
+LIBS = \MinGW\lib\libwsock32.a
+OS_SPEC = ..\src\winSoc.o
+BIN = .exe
+REMOVE = del

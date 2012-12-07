@@ -1,0 +1,15 @@
+camtest.cpp		A utility program to assist in determining usefull color ranges
+files			This file
+makefile		The make file for the system components
+posixSoc.cpp		The code that is specific to UNIX-like OS's
+posixSoc.h		Header for above		
+Posix.Sockets		make include file for UNIX-like OS's
+README			Instructions on how to generate an OS specific system
+sample.cpp		A utility to sample the color range about a foot in frount of robot
+surveyor.cpp		The code to implement the SVR protocol
+surveyor.h		include file for above
+SVR.h			A "switch" file that specifies the OS
+Windows.Sockets		make include file for Windows OS
+winSoc.cpp		The Windows specific code
+winSoc.h		Header file for above
+x.bat			batch file to setup paths for Windows
