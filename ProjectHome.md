@@ -1,0 +1,7 @@
+Project Ocelot is a wheeled Surveyor robot that finds lost items after capturing a picture of the object needing to be found.  Project Ocelot uses the open source OpenCV library to handle its picture recognition toolset and Surveyor Corporation to handle robot drivers.
+
+The user will be able to open a program from their personal computer that allows them to control the functions of the Surveyor robot.  The user will be given options to capture a 2D image and to start/stop the robot from searching for the object.  The user will also be given the option to select a Random or ZigZag search pattern
+
+The Surveyor robot will capture the image through its mounted camera and store the image to reference while searching for the object.  Once the robot has been started it will search for the object using the specified search pattern until it locates it.  It will then proceed to beep/dance and send a picture of the object's current location to the user’s computer.
+
+Because the Surveyor robot uses a mounted camera to capture and record images it is limited by the quality of camera as well as the clarity of the image being shown to it.  In addition, because the robot will run on batteries the duration of the item search will be dependant on the quality and life of those batteries.
